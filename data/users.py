@@ -17,5 +17,9 @@ class User(SqlAlchemyBase):
     email = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     modified_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
+
     # jobs_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("jobs.id"), nullable=True)
     # jobs = orm.relation("Jobs", foreign_keys=[jobs_id])
+
+    def __repr__(self):
+        return f"<Colonist> {self.id} {self.surname} {self.name}"
