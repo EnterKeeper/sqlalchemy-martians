@@ -1,5 +1,6 @@
 import datetime
 import sqlalchemy
+from sqlalchemy import orm
 from .db_session import SqlAlchemyBase
 
 
@@ -15,4 +16,6 @@ class User(SqlAlchemyBase):
     address = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     email = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    modified_date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=True)
+    modified_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
+    # jobs_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("jobs.id"), nullable=True)
+    # jobs = orm.relation("Jobs", foreign_keys=[jobs_id])
