@@ -102,10 +102,8 @@ def edit_job(job_id):
     form = JobsForm()
     if request.method == "GET":
         session = db_session.create_session()
-        print(current_user)
         jobs = session.query(Jobs).filter(Jobs.id == job_id,
                                           (Jobs.user_author == current_user) | (current_user.id == 1)).first()
-        print(jobs.author)
         if jobs:
             form.team_leader.data = jobs.team_leader
             form.job.data = jobs.job
