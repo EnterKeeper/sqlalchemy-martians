@@ -2,29 +2,34 @@
 
 {% block content %}
     <h2 class="text-center">{{ title }}</h2>
+    <a class="btn btn-secondary" href="/addjob">Добавить работу</a>
     {% for item in jobs %}
-        <div class="jobs-item my-2">
+        <div class="jobs-item my-3">
             <h3>Action №{{ item.id }}</h3>
-            <table class="table">
+            <table class="table mb-1">
                 <thead>
                     <tr>
-                        <th scope="col" class="col-md-4">Title of activity</th>
-                        <th scope="col" class="col-md-3">Team leader</th>
-                        <th scope="col" class="col-md-2">Duration</th>
-                        <th scope="col" class="col-md-2">List of collaborators</th>
-                        <th scope="col">Is finished</th>
+                        <th scope="col" class="col-md-4">Описание</th>
+                        <th scope="col" class="col-md-3">Руководитель</th>
+                        <th scope="col" class="col-md-2">Объем работы</th>
+                        <th scope="col" class="col-md-2">Участники</th>
+                        <th scope="col">Завершена</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <th class="fw-normal">{{ item.job }}</th>
                         <th class="fw-normal">{{ item.user_team_leader.name }} {{ item.user_team_leader.surname }}</th>
-                        <th class="fw-normal">{{ item.work_size }} hours</th>
+                        <th class="fw-normal">{{ item.work_size }} часов</th>
                         <th class="fw-normal">{{ item.collaborators }}</th>
-                        {% if item.is_finished %} <th class="table-success fw-normal"> Yes </th> {% else %} <th class="table-danger fw-normal"> No  </th>{% endif %}
+                        {% if item.is_finished %} <th class="table-success fw-normal"> Да </th> {% else %} <th class="table-danger fw-normal"> Нет  </th>{% endif %}
                     </tr>
                 </tbody>
             </table>
+            {% if current_user.is_authenticated and (current_user == item.user_author or current_user.id == 1) %}
+                <a class="btn btn-warning" href="/editjob/{{ item.id }}">Редактировать работу</a>
+                <a class="btn btn-danger" href="/deletejob/{{ item.id }}">Удалить работу</a>
+            {% endif %}
         </div>
     {% endfor %}
 

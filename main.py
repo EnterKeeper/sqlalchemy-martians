@@ -24,7 +24,7 @@ def load_user(user_id):
 def index():
     session = db_session.create_session()
     jobs = session.query(Jobs).all()
-    return render_template("index.html", title="Works log", jobs=jobs)
+    return render_template("index.html", title="Журнал работ", jobs=jobs)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -105,6 +105,7 @@ def edit_job(job_id):
         print(current_user)
         jobs = session.query(Jobs).filter(Jobs.id == job_id,
                                           (Jobs.user_author == current_user) | (current_user.id == 1)).first()
+        print(jobs.author)
         if jobs:
             form.team_leader.data = jobs.team_leader
             form.job.data = jobs.job
