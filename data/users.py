@@ -23,7 +23,7 @@ class User(SqlAlchemyBase, UserMixin):
     modified_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
 
     # jobs_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("jobs.id"), nullable=True)
-    # jobs = orm.relation("Jobs", foreign_keys=[jobs_id])
+    jobs = orm.relation("Jobs", back_populates="user_author", foreign_keys="[Jobs.author]")
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)
