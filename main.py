@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 from data import db_session
@@ -94,6 +94,44 @@ def add_job():
         session.commit()
         return redirect("/")
     return render_template("jobs.html", title="Добавление работы", form=form)
+
+
+@app.route("/editjob/<int:job_id>", methods=["GET", "POST"])
+@login_required
+def edit_job(job_id):
+    form = JobsForm()
+    if request.method == "GET":
+        session = db_session.create_session()
+        print(current_user)
+        jobs = session.query(Jobs).filter(Jobs.id == job_id,
+                                          (Jobs.user_author == current_user) | (current_user.id == 1)).first()
+        if jobs:
+            form.team_leader.data = jobs.team_leader
+            form.job.data = jobs.job
+            form.work_size.data = jobs.work_size
+            form.collaborators.data = jobs.collaborators
+            form.start_date.data = jobs.start_date
+            form.end_date.data = jobs.end_date
+            form.is_finished.data = jobs.is_finished
+        else:
+            abort(404)
+    if form.validate_on_submit():
+        session = db_session.create_session()
+        jobs = session.query(Jobs).filter(Jobs.id == job_id,
+                                          (Jobs.user_author == current_user) | (current_user.id == 1)).first()
+        if jobs:
+            jobs.team_leader = form.team_leader.data
+            jobs.job = form.job.data
+            jobs.work_size = form.work_size.data
+            jobs.collaborators = form.collaborators.data
+            jobs.start_date = form.start_date.data
+            jobs.end_date = form.end_date.data
+            jobs.is_finished = form.is_finished.data
+            session.commit()
+            return redirect("/")
+        else:
+            abort(404)
+    return render_template("jobs.html", title="Редактирование работы", form=form)
 
 
 def main():
