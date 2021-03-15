@@ -134,6 +134,20 @@ def edit_job(job_id):
     return render_template("jobs.html", title="Редактирование работы", form=form)
 
 
+@app.route("/deletejob/<int:job_id>", methods=["GET", "POST"])
+@login_required
+def delete_job(job_id):
+    session = db_session.create_session()
+    jobs = session.query(Jobs).filter(Jobs.id == job_id,
+                                      (Jobs.user_author == current_user) | (current_user.id == 1)).first()
+    if jobs:
+        session.delete(jobs)
+        session.commit()
+    else:
+        abort(404)
+    return redirect("/")
+
+
 def main():
     db_session.global_init("db/martians.db")
     app.run()
