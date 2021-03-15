@@ -1,10 +1,11 @@
 from flask import Flask, render_template, redirect
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 from data import db_session
 from data.jobs import Jobs
 from data.users import User
 from forms.user import RegisterForm, LoginForm
+from forms.jobs import JobsForm
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "very_long_secret_key"
@@ -72,6 +73,27 @@ def login():
 def logout():
     logout_user()
     return redirect("/")
+
+
+@app.route("/addjob", methods=["GET", "POST"])
+@login_required
+def add_job():
+    form = JobsForm()
+    if form.validate_on_submit():
+        session = db_session.create_session()
+        jobs = Jobs()
+        jobs.team_leader = form.team_leader.data
+        jobs.job = form.job.data
+        jobs.work_size = form.work_size.data
+        jobs.collaborators = form.collaborators.data
+        jobs.start_date = form.start_date.data
+        jobs.end_date = form.end_date.data
+        jobs.is_finished = form.is_finished.data
+        current_user.jobs.append(jobs)
+        session.merge(current_user)
+        session.commit()
+        return redirect("/")
+    return render_template("jobs.html", title="Добавление работы", form=form)
 
 
 def main():
