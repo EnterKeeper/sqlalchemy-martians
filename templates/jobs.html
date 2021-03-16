@@ -65,6 +65,15 @@
             {% endfor %}
         </div>
         <div class="mb-4">
+            {{ form.category.label(class="form-label") }}
+            {{ form.category(class="form-control") }}
+            {% for error in form.category.errors %}
+                <div class="alert alert-danger mt-1" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mb-4">
             {{ form.is_finished(class="form-check-input") }}
             {{ form.is_finished.label(class="form-check-label") }}
             {% for error in form.is_finished.errors %}

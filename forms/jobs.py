@@ -11,5 +11,6 @@ class JobsForm(FlaskForm):
     collaborators = StringField("Список ID участников", validators=[DataRequired()])
     start_date = DateField("Дата начала", validators=[DataRequired()])
     end_date = DateField("Дата окончания", validators=[DataRequired()])
+    category = StringField("Категория")
     is_finished = BooleanField("Завершена")
     submit = SubmitField("Применить")

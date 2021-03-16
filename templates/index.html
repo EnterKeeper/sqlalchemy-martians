@@ -14,6 +14,7 @@
                         <th scope="col" class="col-md-3">Руководитель</th>
                         <th scope="col" class="col-md-2">Объем работы</th>
                         <th scope="col" class="col-md-2">Участники</th>
+                        <th scope="col" class="col-md-2">Категория</th>
                         <th scope="col">Завершена</th>
                     </tr>
                 </thead>
@@ -23,6 +24,7 @@
                         <th class="fw-normal">{{ item.user_team_leader.name }} {{ item.user_team_leader.surname }}</th>
                         <th class="fw-normal">{{ item.work_size }} часов</th>
                         <th class="fw-normal">{{ item.collaborators }}</th>
+                        <th class="fw-normal">{{ item.category[-1].name }}</th>
                         {% if item.is_finished %} <th class="table-success fw-normal"> Да </th> {% else %} <th class="table-danger fw-normal"> Нет  </th>{% endif %}
                     </tr>
                 </tbody>
