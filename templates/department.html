@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2 class="text-center">{{ title }}</h2>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        {% if message %}
+            <div class="alert alert-danger mt-1" role="alert">
+                {{ message }}
+            </div>
+        {% endif %}
+        <div class="mb-4">
+            {{ form.title.label(class="form-label") }}
+            {{ form.title(class="form-control") }}
+            {% for error in form.title.errors %}
+                <div class="alert alert-danger mt-1" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mb-4">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control") }}
+            {% for error in form.email.errors %}
+                <div class="alert alert-danger mt-1" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mb-4">
+            {{ form.chief.label(class="form-label") }}
+            {{ form.chief(class="form-control") }}
+            {% for error in form.chief.errors %}
+                <div class="alert alert-danger mt-1" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mb-4">
+            {{ form.members.label(class="form-label") }}
+            {{ form.members(class="form-control") }}
+            {% for error in form.members.errors %}
+                <div class="alert alert-danger mt-1" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        {{ form.submit(class="btn btn-primary mb-2") }}
+    </form>
+{% endblock %}
