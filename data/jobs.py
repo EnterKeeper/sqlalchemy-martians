@@ -20,5 +20,7 @@ class Jobs(SqlAlchemyBase):
     author = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"), nullable=True)
     user_author = orm.relation("User", back_populates="jobs", foreign_keys=[author])
 
+    category = orm.relation("Category", secondary="jobs_to_category", backref="jobs")
+
     def __repr__(self):
         return f"<Job> {self.job}"
