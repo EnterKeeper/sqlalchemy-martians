@@ -35,3 +35,21 @@ def get_one_user(user_id):
     return jsonify({
         "user": user.to_dict(only=FIELDS[1:])
     })
+
+
+@blueprint.route("/api/users", methods=["POST"])
+def create_one_user():
+    data = request.json
+    if not data:
+        return jsonify({"error": "Empty request"})
+    if not all(field in data for field in REQUIRED_FIELDS):
+        return jsonify({"error": "Bad request"})
+    session = db_session.create_session()
+    field_values = {field: data[field] for field in FIELDS if field in data}
+    job = User(**field_values)
+    try:
+        session.add(job)
+        session.commit()
+    except sqlalchemy.exc.IntegrityError:
+        return jsonify({"error": "ID already exists"})
+    return jsonify({"success": "OK"})
