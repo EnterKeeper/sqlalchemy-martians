@@ -30,7 +30,7 @@ def get_jobs():
 @blueprint.route("/api/jobs/<int:job_id>", methods=["GET"])
 def get_one_job(job_id):
     session = db_session.create_session()
-    job = session.query(Jobs).filter(Jobs.id == job_id).first()
+    job = session.query(Jobs).get(job_id)
     if not job:
         return jsonify({"error": "Not found"})
     return jsonify(
@@ -56,3 +56,14 @@ def create_one_job():
     except sqlalchemy.exc.IntegrityError:
         return jsonify({"error": "Id already exists"})
     return jsonify({"success": "OK"})
+
+
+@blueprint.route("/api/jobs/<int:job_id>", methods=["DELETE"])
+def delete_one_job(job_id):
+    session = db_session.create_session()
+    job = session.query(Jobs).get(job_id)
+    if not job:
+        return jsonify({"error": "Not found"})
+    session.delete(job)
+    session.commit()
+    return jsonify({'success': 'OK'})
