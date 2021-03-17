@@ -21,8 +21,17 @@ HASHED_PASSWORD_FIELD = "hashed_password"
 def get_users():
     session = db_session.create_session()
     jobs = session.query(User).all()
-    return jsonify(
-        {
-            "users": [item.to_dict(only=FIELDS) for item in jobs]
-        }
-    )
+    return jsonify({
+        "users": [item.to_dict(only=FIELDS) for item in jobs]
+    })
+
+
+@blueprint.route("/api/users/<int:user_id>", methods=["GET"])
+def get_one_user(user_id):
+    session = db_session.create_session()
+    user = session.query(User).get(user_id)
+    if not user:
+        return jsonify({"error": "Not found"})
+    return jsonify({
+        "user": user.to_dict(only=FIELDS[1:])
+    })
