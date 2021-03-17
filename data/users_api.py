@@ -12,7 +12,7 @@ blueprint = flask.Blueprint(
     template_folder="templates"
 )
 
-FIELDS = ("id", "surname", "name", "age", "position", "speciality", "address", "email")
+FIELDS = ("id", "surname", "name", "age", "position", "speciality", "address", "email", "city_from")
 REQUIRED_FIELDS = ("surname", "name")
 HASHED_PASSWORD_FIELD = "hashed_password"
 

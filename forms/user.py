@@ -14,6 +14,7 @@ class RegisterForm(FlaskForm):
     position = StringField("Должность")
     speciality = StringField("Профессия")
     address = StringField("Адрес")
+    city_from = StringField("Город")
     submit = SubmitField("Зарегистрироваться")
 
 
