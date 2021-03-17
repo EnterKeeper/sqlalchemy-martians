@@ -24,7 +24,7 @@
                         <th class="fw-normal">{{ item.user_team_leader.name }} {{ item.user_team_leader.surname }}</th>
                         <th class="fw-normal">{{ item.work_size }} часов</th>
                         <th class="fw-normal">{{ item.collaborators }}</th>
-                        <th class="fw-normal">{{ item.category[-1].name }}</th>
+                        <th class="fw-normal">{{ item.category }}</th>
                         {% if item.is_finished %} <th class="table-success fw-normal"> Да </th> {% else %} <th class="table-danger fw-normal"> Нет  </th>{% endif %}
                     </tr>
                 </tbody>

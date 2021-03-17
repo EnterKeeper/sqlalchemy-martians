@@ -5,7 +5,6 @@ from data import db_session
 from data.jobs import Jobs
 from data.users import User
 from data.departments import Department
-from data.category import Category
 from forms.user import RegisterForm, LoginForm
 from forms.jobs import JobsForm
 from forms.department import DepartmentForm
@@ -92,8 +91,7 @@ def add_job():
         jobs.start_date = form.start_date.data
         jobs.end_date = form.end_date.data
         jobs.is_finished = form.is_finished.data
-        category = Category(name=form.category.data)
-        jobs.category = [category]
+        jobs.category = form.category.data
         current_user.jobs.append(jobs)
         session.merge(current_user)
         session.commit()
@@ -117,7 +115,7 @@ def edit_job(job_id):
             form.start_date.data = jobs.start_date
             form.end_date.data = jobs.end_date
             form.is_finished.data = jobs.is_finished
-            form.category.data = jobs.category[-1].name
+            form.category.data = jobs.category
         else:
             abort(404)
     if form.validate_on_submit():
@@ -132,8 +130,7 @@ def edit_job(job_id):
             jobs.start_date = form.start_date.data
             jobs.end_date = form.end_date.data
             jobs.is_finished = form.is_finished.data
-            category = Category(name=form.category.data)
-            jobs.category = [category]
+            jobs.category = form.category.data
             session.commit()
             return redirect("/")
         else:
