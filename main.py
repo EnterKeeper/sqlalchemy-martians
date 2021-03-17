@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, request, abort, jsonify, make_response
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+import requests
 
 from data import db_session
 from data import jobs_api
@@ -231,6 +232,21 @@ def delete_department(department_id):
     else:
         abort(404)
     return redirect("/departments")
+
+
+@app.route("/users_show/<int:user_id>")
+def users_show(user_id):
+    session = db_session.create_session()
+    user = session.query(User).get(user_id)
+    if not user:
+        abort(404)
+    coords = requests.get("https://geocode-maps.yandex.ru/1.x", params={
+        "apikey": "40d1649f-0493-4b70-98ba-98533de7710b",
+        "geocode": user.city_from,
+        "format": "json"
+    }).json()["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]["Point"]["pos"].replace(" ", ",")
+    image_url = f"https://static-maps.yandex.ru/1.x/?ll={coords}&l=sat,skl&z=10"
+    return render_template("users_show.html", title=f"{user.name} {user.surname}", user=user, image_url=image_url)
 
 
 def main():

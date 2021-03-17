@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2 class="text-center">{{ title }}</h2>
+    <h4 class="text-center">Город {{ user.city_from }}</h4>
+    <img class="mx-auto d-block" src="{{ image_url }}" alt="map">
+{% endblock %}
