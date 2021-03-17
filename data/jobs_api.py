@@ -67,3 +67,16 @@ def delete_one_job(job_id):
     session.delete(job)
     session.commit()
     return jsonify({'success': 'OK'})
+
+
+@blueprint.route("/api/jobs/<int:job_id>", methods=["PUT"])
+def edit_one_job(job_id):
+    data = request.json
+    if not data:
+        return jsonify({"error": "Empty request"})
+    session = db_session.create_session()
+    result = session.query(Jobs).filter(Jobs.id == job_id).update(data)
+    session.commit()
+    if not result:
+        return jsonify({"error": "Not found"})
+    return jsonify({'success': 'OK'})
