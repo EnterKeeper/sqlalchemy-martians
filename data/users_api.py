@@ -56,11 +56,24 @@ def create_one_user():
 
 
 @blueprint.route("/api/users/<int:user_id>", methods=["DELETE"])
-def delete_one_job(user_id):
+def delete_one_user(user_id):
     session = db_session.create_session()
     user = session.query(User).get(user_id)
     if not user:
         return jsonify({"error": "Not found"})
     session.delete(user)
     session.commit()
+    return jsonify({'success': 'OK'})
+
+
+@blueprint.route("/api/users/<int:user_id>", methods=["PUT"])
+def edit_one_user(user_id):
+    data = request.json
+    if not data:
+        return jsonify({"error": "Empty request"})
+    session = db_session.create_session()
+    result = session.query(User).filter(User.id == user_id).update(data)
+    session.commit()
+    if not result:
+        return jsonify({"error": "Not found"})
     return jsonify({'success': 'OK'})
