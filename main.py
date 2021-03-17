@@ -3,6 +3,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 
 from data import db_session
 from data import jobs_api
+from data import users_api
 from data.jobs import Jobs
 from data.users import User
 from data.departments import Department
@@ -234,6 +235,7 @@ def delete_department(department_id):
 def main():
     db_session.global_init("db/martians.db")
     app.register_blueprint(jobs_api.blueprint)
+    app.register_blueprint(users_api.blueprint)
     app.run()
 
 
