@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, abort
+from flask import Flask, render_template, redirect, request, abort, jsonify, make_response
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 from data import db_session
@@ -15,6 +15,11 @@ app.config["SECRET_KEY"] = "very_long_secret_key"
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
 
 
 @login_manager.user_loader
