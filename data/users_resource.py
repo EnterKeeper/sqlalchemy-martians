@@ -28,7 +28,7 @@ def abort_if_user_not_found(user_id):
 
 parser = reqparse.RequestParser()
 parser.add_argument("email", required=True)
-parser.add_argument("password", required=True)
+parser.add_argument(HASHED_PASSWORD_FIELD, required=True)
 parser.add_argument("surname", required=True)
 parser.add_argument("name", required=True)
 parser.add_argument("age", type=int)
@@ -57,10 +57,10 @@ class UserResource(Resource):
         abort_if_user_not_found(user_id)
         session = db_session.create_session()
         data = request.json
-        if "password" in data:
+        if HASHED_PASSWORD_FIELD in data:
             user = session.query(User).get(user_id)
-            user.set_password(data["password"])
-            data.pop("password")
+            user.set_password(data[HASHED_PASSWORD_FIELD])
+            data.pop(HASHED_PASSWORD_FIELD)
         session.query(User).filter(User.id == user_id).update(data)
         session.commit()
         return jsonify(SUCCESS)
@@ -77,7 +77,7 @@ class UsersListResource(Resource):
         session = db_session.create_session()
         data = {field: args[field] for field in FIELDS[1:]}
         user = User(**data)
-        user.set_password(args["password"])
+        user.set_password(args[HASHED_PASSWORD_FIELD])
         session.add(user)
         session.commit()
         return jsonify(SUCCESS)
