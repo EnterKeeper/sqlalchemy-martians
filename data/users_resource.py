@@ -6,7 +6,7 @@ from . import db_session
 from .users import User
 
 blueprint = flask.Blueprint(
-    "users_api_v2",
+    "users_resource",
     __name__,
     template_folder="templates"
 )
