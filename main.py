@@ -5,7 +5,7 @@ import requests
 from data import db_session
 from data import jobs_api
 from data import users_api
-from data import users_api_v2
+from data import users_resource
 from data.jobs import Jobs
 from data.users import User
 from data.departments import Department
@@ -254,7 +254,7 @@ def main():
     db_session.global_init("db/martians.db")
     app.register_blueprint(jobs_api.blueprint)
     app.register_blueprint(users_api.blueprint)
-    app.register_blueprint(users_api_v2.blueprint)
+    app.register_blueprint(users_resource.blueprint)
     app.run()
 
 
