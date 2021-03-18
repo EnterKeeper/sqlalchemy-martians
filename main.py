@@ -6,6 +6,7 @@ from data import db_session
 from data import jobs_api
 from data import users_api
 from data import users_resource
+from data import jobs_resource
 from data.jobs import Jobs
 from data.users import User
 from data.departments import Department
@@ -253,6 +254,7 @@ def users_show(user_id):
 def main():
     db_session.global_init("db/martians.db")
     app.register_blueprint(jobs_api.blueprint)
+    app.register_blueprint(jobs_resource.blueprint)
     app.register_blueprint(users_api.blueprint)
     app.register_blueprint(users_resource.blueprint)
     app.run()
